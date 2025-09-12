@@ -22,14 +22,14 @@ const registerPartner = async (req, res) => {
 
     const token = jwt.sign(
       {
-        id: newUser._id,
+        id: newPartner._id,
       },
       process.env.JWT_SECRET
     );
 
     res.cookie("token", token);
 
-    await newUser.save();
+    await newPartner.save();
 
     res.status(201).json({
       message: "Partner registered successfully",
@@ -60,7 +60,7 @@ const loginPartner = async (req, res) => {
 
     const token = jwt.sign(
       {
-        id: existingUser._id,
+        id: existingPartner._id,
       },
       process.env.JWT_SECRET
     );
