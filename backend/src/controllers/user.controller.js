@@ -45,4 +45,38 @@ const registerUser = async (req, res) => {
   }
 };
 
-export { registerUser };
+// LOGIN USER
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const existingUser = await userModel.findOne({ email });
+
+    if (!existingUser) return res.status(400).json({ message: "User does not exist" });
+
+    const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
+
+    if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" });
+
+    const token = jwt.sign(
+      {
+        id: existingUser._id,
+      },
+      process.env.JWT_SECRET
+    );
+
+    res.cookie("token", token);
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+// LOGOUT USER
+const logoutUser = (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "User logged out successfully" });
+};
+
+export { registerUser, loginUser, logoutUser };
