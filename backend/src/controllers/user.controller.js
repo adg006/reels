@@ -66,6 +66,14 @@ const loginUser = async (req, res) => {
     );
 
     res.cookie("token", token);
+
+    res.status(200).json({
+      message: "User logged in successfully",
+      existingUser: {
+        id: existingUser._id,
+        email: existingUser.email,
+      },
+    });
   } catch (error) {
     res.status(500).json({
       message: "Internal server error",
