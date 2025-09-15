@@ -5,6 +5,7 @@ const foodSchema = new mongoose.Schema(
     name: { type: String, required: true },
     video_url: { type: String, required: true },
     description: { type: String, required: true },
+    partnerId: { type: mongoose.Schema.Types.ObjectId, ref: "partner", required: true },
   },
   {
     timestamps: true,
